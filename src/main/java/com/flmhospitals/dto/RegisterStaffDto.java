@@ -27,8 +27,7 @@ public class RegisterStaffDto {
 	
 	private String experienceInYears;
 	
-	//This can be un-comment once the StaffDetailsDto is completed
-//	private StaffDetailsDto staffDeatilsDtO;
+	private String email;
 	
 	private StaffAddressDto staffAddressDto;
 
