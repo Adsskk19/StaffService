@@ -41,7 +41,7 @@ public class StaffDetails {
 	    private String role; // e.g., Nurse, Doctor, Admin
 
 	    @OneToOne(cascade = CascadeType.ALL)
-	    @JoinColumn(name = "address_id", referencedColumnName = "addressId")
+	    @JoinColumn(name = "address_id", referencedColumnName = "staffAddressId")
 	    private StaffAddress address;
 
 	    @Column(nullable = false)
