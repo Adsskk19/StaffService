@@ -27,15 +27,10 @@ public class StaffDetails {
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "staffAddressId")
-    private StaffAddress address;
-
 	public StaffDetails(String email, String password, StaffAddress address) {
 		super();
 		this.email = email;
 		this.password = password;
-		this.address = address;
 	}
     
     
