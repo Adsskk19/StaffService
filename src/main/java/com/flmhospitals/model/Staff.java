@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.flmhospitals.enums.Specialization;
 import com.flmhospitals.enums.StaffType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +13,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -63,7 +66,13 @@ public class Staff {
 	@Column(nullable = false)
 	private boolean isEmployeeActive;
 
-	// staffDetails,
-	// staffAddress
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "staffAddressId")
+	private StaffAddress staffAddress;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "staffDetailsId")
+	private StaffDetails staffDetails;
+	
 
 }
