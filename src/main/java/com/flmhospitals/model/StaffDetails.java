@@ -1,9 +1,6 @@
 package com.flmhospitals.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,36 +18,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StaffDetails {
-	
-	 	@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long staffId;
 
-	  
-	    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long staffDetailsId;
 
-	   
-	    @Column(unique = true)
-	    private String email;
+    private String email;
 
-	    
-	    @Column(unique = true)
-	    private String phoneNumber;
+    private String password;
 
-	
-	    private String role; // e.g., Nurse, Doctor, Admin
-
-	    @OneToOne(cascade = CascadeType.ALL)
-	    @JoinColumn(name = "address_id", referencedColumnName = "staffAddressId")
-	    private StaffAddress address;
-
-	    @Column(nullable = false)
-	    private boolean isActive = true;
-
-	    @Column(updatable = false)
-	    private LocalDateTime createdAt = LocalDateTime.now();
-
-	    private LocalDateTime updatedAt = LocalDateTime.now();
-
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "staffAddressId")
+    private StaffAddress address;
 }
