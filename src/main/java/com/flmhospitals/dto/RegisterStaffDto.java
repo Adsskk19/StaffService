@@ -1,5 +1,8 @@
 package com.flmhospitals.dto;
 
+import com.flmhospitals.enums.Specialization;
+import com.flmhospitals.enums.StaffType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,13 +18,9 @@ public class RegisterStaffDto {
 	
 	private long phoneNumber;
 	
-	private String staffType;
-	
 	private String role;
 	
 	private String gender;
-	
-	private String specilization;
 	
 	private String dateOfJoining;
 	
@@ -30,5 +29,10 @@ public class RegisterStaffDto {
 	private String email;
 	
 	private StaffAddressDto staffAddressDto;
+	
+	private Specialization specialization;
+	
+	private StaffType staffType;
+	
 
 }
