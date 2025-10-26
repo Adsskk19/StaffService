@@ -2,7 +2,9 @@ package com.flmhospitals.utility;
 
 import org.springframework.stereotype.Component;
 
-import com.flmhospitals.repository.StaffRepository;
+import com.flmhospitals.dao.StaffRepository;
+
+
 
 @Component
 public class StaffIdGenerator {
