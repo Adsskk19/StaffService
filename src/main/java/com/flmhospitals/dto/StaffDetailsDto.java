@@ -8,9 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class RegisterStaffDto {
+@NoArgsConstructor
+public class StaffDetailsDto {
+	
+	private String staffId;
 	
 	private String firstName;
 	
@@ -22,17 +24,15 @@ public class RegisterStaffDto {
 	
 	private String gender;
 	
-	private String dateOfJoining;
-	
 	private String experienceInYears;
 	
 	private String email;
 	
-	private StaffAddressDto staffAddressDto;
-	
 	private Specialization specialization;
 	
 	private StaffType staffType;
+	
+	private StaffAddressDto staffAddressDto;
 	
 
 }
