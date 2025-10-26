@@ -23,7 +23,7 @@ public class DoctorSchedule {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long doctorScheduleId;
 
 	@ManyToOne
 	@JoinColumn(name = "staff_id", nullable = false)
