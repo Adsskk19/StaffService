@@ -4,18 +4,19 @@ import java.time.LocalDate;
 
 import com.flmhospitals.enums.Specialization;
 import com.flmhospitals.enums.StaffType;
+import com.flmhospitals.model.utility.StaffIdGenerator;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,10 +29,7 @@ import lombok.NoArgsConstructor;
 public class Staff {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id; 
-	
-	@Column(unique = true, nullable = false)
+	@Column(name = "staff_id", nullable = false, unique = true)
 	private String staffId;
 	
 	@Column(nullable = false)
@@ -73,6 +71,16 @@ public class Staff {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "staffDetailsId")
 	private StaffDetails staffDetails;
+	
+	@Transient
+    private StaffIdGenerator staffIdGenerator;
+	
+	 @PrePersist
+	    public void generateStaffId() {
+	        if (this.staffId == null || this.staffId.isEmpty()) {
+	            this.staffId = staffIdGenerator.generateNextStaffId();
+	        }
+	    }
 	
 
 }
