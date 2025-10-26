@@ -1,7 +1,7 @@
-package com.flmhospitals.model.utility;
+package com.flmhospitals.utility;
 
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import com.flmhospitals.repository.StaffRepository;
 
 @Component
