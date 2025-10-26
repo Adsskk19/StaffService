@@ -1,4 +1,4 @@
-package com.flmhospitals.utility;
+package com.flmhospitals.utils;
 
 import org.springframework.stereotype.Component;
 

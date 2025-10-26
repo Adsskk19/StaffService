@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import com.flmhospitals.enums.Specialization;
 import com.flmhospitals.enums.StaffType;
-import com.flmhospitals.utility.StaffIdGenerator;
+import com.flmhospitals.utils.StaffIdGenerator;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
