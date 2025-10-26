@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StaffAddressDto {
 	
-	private String landMark;
+	 private String landmark;
 	
 	private String city;
 	
 	private String state;
+	
+	private String country;
 	
 	private long pinCode;
 

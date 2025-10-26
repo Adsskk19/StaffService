@@ -38,6 +38,9 @@ public class Staff {
 	@Column(nullable = false)
 	private String lastName;
 	
+	@Column(nullable = false)
+	private String gender;
+	
 	@Column(length=15,nullable = false )
 	private String phoneNumber;
 	
@@ -56,7 +59,7 @@ public class Staff {
 	private LocalDate dateOfBirth;
 	
 	@Column(nullable = false)
-	private int experienceInYears;
+	private String experienceInYears;
 	
 	@Column(nullable = false)
 	private boolean canLogin;
