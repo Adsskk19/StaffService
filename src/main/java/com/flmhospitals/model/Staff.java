@@ -59,7 +59,7 @@ public class Staff {
 	private LocalDate dateOfBirth;
 	
 	@Column(nullable = false)
-	private String experienceInYears;
+	private int experienceInYears;
 	
 	@Column(nullable = false)
 	private boolean canLogin;

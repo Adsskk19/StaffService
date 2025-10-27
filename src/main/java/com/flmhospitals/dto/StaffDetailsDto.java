@@ -26,7 +26,7 @@ public class StaffDetailsDto {
 	
 	private String gender;
 	
-	private String experienceInYears;
+	private int experienceInYears;
 	
 	private String email;
 	
