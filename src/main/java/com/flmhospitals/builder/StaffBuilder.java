@@ -2,8 +2,10 @@ package com.flmhospitals.builder;
 
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffAddressDto;
+import com.flmhospitals.dto.StaffDetailsDto;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.model.StaffAddress;
+import com.flmhospitals.model.StaffDetails;
 
 public class StaffBuilder {
 
@@ -18,6 +20,8 @@ public class StaffBuilder {
 		.specialization(registerStaffDto.getSpecialization())
 		.experienceInYears(Integer.parseInt(registerStaffDto.getExperienceInYears()))
 		.staffAddress(buildStaffAdddressFromStaffAddressDto(registerStaffDto.getStaffAddressDto()))
+		.staffDetails(buildStaffDetailsFromStaffDetailsDto(registerStaffDto.getEmail()))
+		
 		
 		.build();
 		
@@ -34,5 +38,12 @@ public class StaffBuilder {
 				.build();
 				
 				
+	}
+	
+	public static StaffDetails buildStaffDetailsFromStaffDetailsDto(String email) {
+		
+		return StaffDetails.builder()
+				           .email(email)
+				           .build();
 	}
 }
