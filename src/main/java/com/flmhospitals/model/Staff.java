@@ -18,6 +18,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Staff {
 	
 	@Id
@@ -33,7 +35,7 @@ public class Staff {
 	private String staffId;
 	
 	@Column(nullable = false)
-	private String firstname;
+	private String firstName;
 	
 	@Column(nullable = false)
 	private String lastName;
