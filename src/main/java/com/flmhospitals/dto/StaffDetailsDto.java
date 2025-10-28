@@ -4,12 +4,14 @@ import com.flmhospitals.enums.Specialization;
 import com.flmhospitals.enums.StaffType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class StaffDetailsDto {
 	
 	private String staffId;
@@ -18,13 +20,13 @@ public class StaffDetailsDto {
 	
 	private String lastName;
 	
-	private long phoneNumber;
+	private String phoneNumber;
 	
 	private String role;
 	
 	private String gender;
 	
-	private String experienceInYears;
+	private int experienceInYears;
 	
 	private String email;
 	

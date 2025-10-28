@@ -38,6 +38,9 @@ public class Staff {
 	@Column(nullable = false)
 	private String lastName;
 	
+	@Column(nullable = false)
+	private String gender;
+	
 	@Column(length=15,nullable = false )
 	private String phoneNumber;
 	
