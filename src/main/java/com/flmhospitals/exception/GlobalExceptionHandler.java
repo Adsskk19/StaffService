@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(DoctorUnavailableException.class)
 	public ResponseEntity<String> getDoctorUnavilableException(DoctorUnavailableException ex){
-		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
 	}
 	
 }
