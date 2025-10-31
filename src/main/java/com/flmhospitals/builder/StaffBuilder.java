@@ -17,7 +17,7 @@ public class StaffBuilder {
 		.role(registerStaffDto.getRole())
 		.staffType(registerStaffDto.getStaffType())
 		.specialization(registerStaffDto.getSpecialization())
-		.experienceInYears(Integer.parseInt(registerStaffDto.getExperienceInYears()))
+		.experienceInYears(registerStaffDto.getExperienceInYears())
 		.staffAddress(buildStaffAdddressFromStaffAddressDto(registerStaffDto.getStaffAddressDto()))
 		.staffDetails(buildStaffDetailsFromStaffDetailsDto(registerStaffDto.getEmail()))
 		
