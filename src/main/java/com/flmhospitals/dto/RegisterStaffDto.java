@@ -24,7 +24,7 @@ public class RegisterStaffDto {
 	
 	private String dateOfJoining;
 	
-	private String experienceInYears;
+	private int experienceInYears;
 	
 	private String email;
 	
