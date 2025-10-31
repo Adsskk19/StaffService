@@ -2,6 +2,7 @@ package com.flmhospitals.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +32,12 @@ public class StaffController {
 	}
 	
 	@PostMapping("/registerStaffDetails")
-	public StaffDetailsDto registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
+	public ResponseEntity<StaffDetailsDto> registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
 		StaffDetailsDto registeredStaffDetailsDto = staffService.registerStaffDeatils(registerStaffDto);
 		
-		return registeredStaffDetailsDto;
+		return  ResponseEntity.status(HttpStatus.CREATED).body(registeredStaffDetailsDto);
+
+		
 	}
 	
 	
