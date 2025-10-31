@@ -14,7 +14,7 @@ public class StaffBuilder {
 		.firstName(registerStaffDto.getFirstName())
 		.lastName(registerStaffDto.getLastName())
 		.phoneNumber(String.valueOf(registerStaffDto.getPhoneNumber()))
-		.role(registerStaffDto.getRole())
+		.gender(registerStaffDto.getGender())
 		.staffType(registerStaffDto.getStaffType())
 		.specialization(registerStaffDto.getSpecialization())
 		.experienceInYears(registerStaffDto.getExperienceInYears())
@@ -33,7 +33,8 @@ public class StaffBuilder {
 				.landmark(staffAddressDto.getLandmark())
 				.city(staffAddressDto.getCity())
 				.state(staffAddressDto.getState())
-				.pinCode(String.valueOf(staffAddressDto.getPinCode()))
+				.country(staffAddressDto.getCountry())
+				.pinCode(staffAddressDto.getPinCode())
 				.build();
 				
 				
