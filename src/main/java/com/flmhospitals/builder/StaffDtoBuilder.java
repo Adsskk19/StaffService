@@ -13,7 +13,7 @@ public class StaffDtoBuilder {
 		
   return StaffDetailsDto.builder()
 		.staffId(staff.getStaffId())
-		.firstName(staff.getFirstname())
+		.firstName(staff.getFirstName())
 		.lastName(staff.getLastName())
 		.phoneNumber(staff.getPhoneNumber())
 		.role(staff.getRole())
