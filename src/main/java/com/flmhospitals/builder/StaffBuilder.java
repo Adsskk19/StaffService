@@ -31,7 +31,7 @@ public class StaffBuilder {
 	public static StaffAddress buildStaffAdddressFromStaffAddressDto(StaffAddressDto staffAddressDto) {
 		
 		return StaffAddress.builder()
-				.street(staffAddressDto.getLandMark())
+				.street(staffAddressDto.getStreet())
 				.city(staffAddressDto.getCity())
 				.state(staffAddressDto.getState())
 				.pinCode(String.valueOf(staffAddressDto.getPinCode()))
