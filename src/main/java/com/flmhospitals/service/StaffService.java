@@ -8,5 +8,5 @@ import com.flmhospitals.dto.StaffDetailsDto;
 
 public interface StaffService {
 
-	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String firstName, String lastName);
+	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String name);
 }

@@ -23,15 +23,14 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	@Override
-	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String firstName, String lastName) {
+	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String name) {
 
-		List<Staff> staffs = staffRepository.findByFirstNameLikeOrLastNameLike("%" + firstName + "%",
-				"%" + lastName + "%");
+		List<Staff> staffs = staffRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name);
 
 		List<StaffDetailsDto> staffDetailsDtoList = new ArrayList<>();
 
 		if (staffs.isEmpty()) {
-			throw new StaffNotFoundException("No staff found with name : " + firstName + " or " + lastName);
+			throw new StaffNotFoundException("No staff found with name : " + name);
 		}
 
 		for (Staff staff : staffs) {

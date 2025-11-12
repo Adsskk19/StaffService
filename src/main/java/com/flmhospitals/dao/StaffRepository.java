@@ -12,5 +12,5 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
 	@Query(value = "SELECT staff_id from staff ORDER BY staff_id DESC LIMIT 1", nativeQuery = true)
 	String findLastStaffId();
 
-	List<Staff> findByFirstNameLikeOrLastNameLike(String firstName, String lastName);
+	List<Staff> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName);
 }

@@ -23,9 +23,8 @@ public class StaffController {
 
 	@GetMapping("/searchByStaffName")
 	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(
-			@RequestParam(name = "firstName", required = false) String firstName,
-			@RequestParam(name = "lastName", required = false) String lastName) {
-		return staffService.searchByStaffFirstNameOrLastName(firstName, lastName);
+			@RequestParam(name = "name", required = true) String name) {
+		return staffService.searchByStaffFirstNameOrLastName(name);
 
 	}
 
