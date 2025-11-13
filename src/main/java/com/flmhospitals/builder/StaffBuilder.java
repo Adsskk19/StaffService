@@ -2,7 +2,6 @@ package com.flmhospitals.builder;
 
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffAddressDto;
-import com.flmhospitals.dto.StaffDetailsDto;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.model.StaffAddress;
 import com.flmhospitals.model.StaffDetails;
@@ -18,7 +17,7 @@ public class StaffBuilder {
 		.role(registerStaffDto.getRole())
 		.staffType(registerStaffDto.getStaffType())
 		.specialization(registerStaffDto.getSpecialization())
-		.experienceInYears(Integer.parseInt(registerStaffDto.getExperienceInYears()))
+		.experienceInYears(registerStaffDto.getExperienceInYears())
 		.staffAddress(buildStaffAdddressFromStaffAddressDto(registerStaffDto.getStaffAddressDto()))
 		.staffDetails(buildStaffDetailsFromStaffDetailsDto(registerStaffDto.getEmail()))
 		
@@ -31,7 +30,7 @@ public class StaffBuilder {
 	public static StaffAddress buildStaffAdddressFromStaffAddressDto(StaffAddressDto staffAddressDto) {
 		
 		return StaffAddress.builder()
-				.street(staffAddressDto.getLandMark())
+				.landmark(staffAddressDto.getLandmark())
 				.city(staffAddressDto.getCity())
 				.state(staffAddressDto.getState())
 				.pinCode(String.valueOf(staffAddressDto.getPinCode()))
