@@ -31,7 +31,7 @@ public class StaffController {
 
 	}
 	
-	@PostMapping("/registerStaffDetails")
+	@PostMapping("/register")
 	public ResponseEntity<StaffDetailsDto> registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
 		StaffDetailsDto registeredStaffDetailsDto = staffService.registerStaffDeatils(registerStaffDto);
 		
