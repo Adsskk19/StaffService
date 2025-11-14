@@ -18,6 +18,7 @@ public class StaffDtoBuilder {
 		.phoneNumber(staff.getPhoneNumber())
 		.role(staff.getRole())
 		.gender(staff.getGender())
+		.dateOfJoining(staff.getDateOfJoining())
 		.experienceInYears(staff.getExperienceInYears())
 		.email(staff.getStaffDetails().getEmail())
 		.specialization(staff.getSpecialization())

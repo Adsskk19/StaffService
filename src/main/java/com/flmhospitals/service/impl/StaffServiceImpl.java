@@ -6,20 +6,26 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.flmhospitals.builder.StaffBuilder;
 import com.flmhospitals.builder.StaffDtoBuilder;
 import com.flmhospitals.dao.StaffRepository;
+import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffDetailsDto;
+import com.flmhospitals.enums.StaffType;
 import com.flmhospitals.exception.StaffNotFoundException;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.service.StaffService;
+import com.flmhospitals.utils.StaffIdGenerator;
 
 @Service
 public class StaffServiceImpl implements StaffService {
 
 	private final StaffRepository staffRepository;
+	private final StaffIdGenerator staffIdGenerator;
 
-	public StaffServiceImpl(StaffRepository staffRepository) {
+	public StaffServiceImpl(StaffRepository staffRepository, StaffIdGenerator staffIdGenerator) {
 		this.staffRepository = staffRepository;
+		this.staffIdGenerator = staffIdGenerator;
 	}
 
 	@Override
@@ -40,4 +46,26 @@ public class StaffServiceImpl implements StaffService {
 		return ResponseEntity.ok(staffDetailsDtoList);
 	}
 
+	@Override
+	public StaffDetailsDto registerStaffDeatils(RegisterStaffDto registerStaffDto) {
+		// TODO Auto-generated method stub
+		
+		Staff staff =  StaffBuilder.buildStaffFromRegisterStaffDto(registerStaffDto);
+		boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);//
+		if (roleFlag) {
+			staff.setRole("Admin");
+			staff.setCanLogin(true);
+		}
+		else {
+			staff.setRole("Non-Admin");
+		}
+		staff.setEmployeeActive(true);
+		
+		 Staff registerdStaff =  staffRepository.save(staff);
+		 
+		return StaffDtoBuilder.buildStaffDetailsDto(registerdStaff);
+	}
+		
+	
+	
 }

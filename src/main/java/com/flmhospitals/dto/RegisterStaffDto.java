@@ -1,5 +1,7 @@
 package com.flmhospitals.dto;
 
+import java.time.LocalDate;
+
 import com.flmhospitals.enums.Specialization;
 import com.flmhospitals.enums.StaffType;
 
@@ -18,11 +20,9 @@ public class RegisterStaffDto {
 	
 	private long phoneNumber;
 	
-	private String role;
-	
 	private String gender;
 	
-	private String dateOfJoining;
+	private LocalDate dateOfJoining;
 	
 	private int experienceInYears;
 	
