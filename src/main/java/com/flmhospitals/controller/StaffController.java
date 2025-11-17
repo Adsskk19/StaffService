@@ -1,5 +1,8 @@
 package com.flmhospitals.controller;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.flmhospitals.model.Staff;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -17,12 +20,19 @@ import com.flmhospitals.service.StaffService;
 @RestController
 @RequestMapping("/staff")
 public class StaffController {
-
+	
 	private final StaffService staffService;
 
 	public StaffController(StaffService staffService) {
+		super();
 		this.staffService = staffService;
 	}
+	
+	@GetMapping("/{staffId}")
+	public Staff getStaffByStaffId(@PathVariable String staffId) {
+		return staffService.getStaffByStaffId(staffId);
+	}
+
 
 	@GetMapping("/searchByStaffName")
 	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(

@@ -1,5 +1,8 @@
 package com.flmhospitals.service.impl;
 
+
+import java.util.Optional;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,12 @@ public class StaffServiceImpl implements StaffService {
 		this.staffRepository = staffRepository;
 		this.staffIdGenerator = staffIdGenerator;
 	}
+
+ @Override
+	public Staff getStaffByStaffId(String staffId) {
+		return staffRepository.findById(staffId)
+				.orElseThrow(() -> new StaffNotFoundException("Staff with ID :"+ staffId+" not found"));
+  }
 
 	@Override
 	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String name) {
