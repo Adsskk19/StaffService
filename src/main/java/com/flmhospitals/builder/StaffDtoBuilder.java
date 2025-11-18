@@ -46,7 +46,7 @@ public class StaffDtoBuilder {
         if (dto.getRole() != null) staff.setRole(dto.getRole());
         if (dto.getGender() != null) staff.setGender(dto.getGender());
         if (dto.getExperienceInYears() > 0) staff.setExperienceInYears(dto.getExperienceInYears());
-        if (dto.getAadharNumber() != null) staff.setAadharNumber(dto.getAadharNumber());
+//        if (dto.getAadharNumber() != null) staff.setAadharNumber(dto.getAadharNumber());
         if (dto.getEmail() != null) staff.getStaffDetails().setEmail(dto.getEmail());
         if (dto.getSpecialization() != null) staff.setSpecialization(dto.getSpecialization());
         if (dto.getStaffType() != null) staff.setStaffType(dto.getStaffType());
