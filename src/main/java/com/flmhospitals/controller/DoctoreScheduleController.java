@@ -1,0 +1,31 @@
+package com.flmhospitals.controller;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.flmhospitals.service.DoctorScheduleService;
+
+@RestController
+@RequestMapping("doctorSchedule")
+public class DoctoreScheduleController {
+
+	private final DoctorScheduleService doctorScheduleService;
+
+	public DoctoreScheduleController(DoctorScheduleService doctorScheduleService) {
+		this.doctorScheduleService = doctorScheduleService;
+	}
+
+	@PostMapping("/markavailable")
+	 public ResponseEntity<String> markDoctorAvailable(@RequestParam("staffId") String staffId, @RequestBody List<LocalDate> dates) {
+	     return doctorScheduleService.markDoctorAvailable(staffId, dates);
+	 }	
+
+
+}
