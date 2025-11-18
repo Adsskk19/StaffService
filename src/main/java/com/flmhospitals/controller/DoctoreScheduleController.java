@@ -13,18 +13,18 @@ import com.flmhospitals.service.DoctorScheduleService;
 @RestController
 @RequestMapping("doctorSchedule")
 public class DoctoreScheduleController {
-	
+
 	private final DoctorScheduleService doctorScheduleService;
 
 	public DoctoreScheduleController(DoctorScheduleService doctorScheduleService) {
 		this.doctorScheduleService = doctorScheduleService;
 	}
-	
+
 	@GetMapping("/isDoctorAvailable")
-	public ResponseEntity<String> isDoctorAvailable(@RequestParam("staffId") String staffId, @RequestParam("date") String date){
+	public ResponseEntity<String> isDoctorAvailable(@RequestParam("staffId") String staffId,
+			@RequestParam("date") String date) {
 		LocalDate localDate = LocalDate.parse(date);
 		return doctorScheduleService.isDoctorAvailable(staffId, localDate);
 	}
-	
 
 }
