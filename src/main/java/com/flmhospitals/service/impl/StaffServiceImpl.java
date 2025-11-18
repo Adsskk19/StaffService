@@ -53,23 +53,11 @@ public class StaffServiceImpl implements StaffService {
 		return ResponseEntity.ok(staffDetailsDtoList);
 	}
 
-
-	@Override
-	public StaffDetailsDto updateStaff(String staffId, RegisterStaffDto dto) {
-		Staff staff = staffRepository.findById(staffId)
-				.orElseThrow(() -> new StaffNotFoundException("Staff ID: " + staffId + " not found"));
-		
-		StaffDtoBuilder.updateStaffEntity(staff, dto);
-		Staff updatedStaff = staffRepository.save(staff);
-		return StaffDtoBuilder.buildStaffDetailsDto(updatedStaff);
-
-	}
-
 	@Override
 	public StaffDetailsDto registerStaffDeatils(RegisterStaffDto registerStaffDto) {
 	
 		Staff staff =  StaffBuilder.buildStaffFromRegisterStaffDto(registerStaffDto);
-		boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);//
+		boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);
 		if (roleFlag) {
 			staff.setRole("Admin");
 			staff.setCanLogin(true);
@@ -82,6 +70,17 @@ public class StaffServiceImpl implements StaffService {
 		 Staff registerdStaff =  staffRepository.save(staff);
 		 
 		return StaffDtoBuilder.buildStaffDetailsDto(registerdStaff);
+	}
+	
+	@Override
+	public StaffDetailsDto updateStaff(String staffId, RegisterStaffDto dto) {
+		Staff staff = staffRepository.findById(staffId)
+				.orElseThrow(() -> new StaffNotFoundException("Staff ID: " + staffId + " not found"));
+		
+		StaffDtoBuilder.updateStaffEntity(staff, dto);
+		Staff updatedStaff = staffRepository.save(staff);
+		return StaffDtoBuilder.buildStaffDetailsDto(updatedStaff);
+
 	}
 		
 	

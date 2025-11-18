@@ -6,6 +6,7 @@ import com.flmhospitals.dto.StaffAddressDto;
 import com.flmhospitals.dto.StaffDetailsDto;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.model.StaffAddress;
+import com.flmhospitals.model.StaffDetails;
 
 public class StaffDtoBuilder {
 
@@ -40,27 +41,35 @@ public class StaffDtoBuilder {
 	
 	public static void updateStaffEntity(Staff staff, RegisterStaffDto dto) {
 
-        if (dto.getFirstName() != null) staff.setFirstName(dto.getFirstName());
-        if (dto.getLastName() != null) staff.setLastName(dto.getLastName());
-        if (dto.getPhoneNumber() != null) staff.setPhoneNumber(dto.getPhoneNumber());
-        if (dto.getRole() != null) staff.setRole(dto.getRole());
-        if (dto.getGender() != null) staff.setGender(dto.getGender());
-        if (dto.getExperienceInYears() > 0) staff.setExperienceInYears(dto.getExperienceInYears());
-//        if (dto.getAadharNumber() != null) staff.setAadharNumber(dto.getAadharNumber());
-        if (dto.getEmail() != null) staff.getStaffDetails().setEmail(dto.getEmail());
-        if (dto.getSpecialization() != null) staff.setSpecialization(dto.getSpecialization());
-        if (dto.getStaffType() != null) staff.setStaffType(dto.getStaffType());
+		if (dto.getFirstName() != null) staff.setFirstName(dto.getFirstName());
+		if (dto.getLastName() != null) staff.setLastName(dto.getLastName());
+		if (dto.getPhoneNumber() != null) staff.setPhoneNumber(dto.getPhoneNumber());
+		if (dto.getRole() != null) staff.setRole(dto.getRole());
+		if (dto.getGender() != null) staff.setGender(dto.getGender());
+		if (dto.getExperienceInYears() >= 0) staff.setExperienceInYears(dto.getExperienceInYears());
+		if (dto.getEmail() != null) {
+			if (staff.getStaffDetails() == null) {
+				staff.setStaffDetails(new StaffDetails());
+			}
+		}
+		staff.getStaffDetails().setEmail(dto.getEmail());
 
-        if (dto.getStaffAddressDto() != null) {
-            StaffAddress address = staff.getStaffAddress();
-            StaffAddressDto addressDto = dto.getStaffAddressDto();
-            if (addressDto.getLandmark() != null) address.setLandmark(addressDto.getLandmark());
-            if (addressDto.getCity() != null) address.setCity(addressDto.getCity());
-            if (addressDto.getState() != null) address.setState(addressDto.getState());
-            if (addressDto.getCountry() != null) address.setCountry(addressDto.getCountry());
-            if (addressDto.getPinCode() != null) address.setPinCode(addressDto.getPinCode());
-        }
-    
+		if (dto.getSpecialization() != null) staff.setSpecialization(dto.getSpecialization());
+		if (dto.getStaffType() != null) staff.setStaffType(dto.getStaffType());
+		if (dto.getStaffAddressDto() != null) {
+			StaffAddress address = staff.getStaffAddress();
+			if (address == null) {
+				address = new StaffAddress();
+				staff.setStaffAddress(address);
+			}
+			StaffAddressDto addressDto = dto.getStaffAddressDto();
+        if (addressDto.getLandmark() != null) address.setLandmark(addressDto.getLandmark());
+	    if (addressDto.getCity() != null) address.setCity(addressDto.getCity());
+		if (addressDto.getState() != null) address.setState(addressDto.getState());
+		if (addressDto.getCountry() != null) address.setCountry(addressDto.getCountry());
+		if (addressDto.getPinCode() != null) address.setPinCode(addressDto.getPinCode());
+		}
+
 	}
 
 }

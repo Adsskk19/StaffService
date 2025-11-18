@@ -7,7 +7,6 @@ import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffDetailsDto;
 import com.flmhospitals.model.Staff;
 
-
 public interface StaffService {
 	
 	 Staff getStaffByStaffId(String staffId);
