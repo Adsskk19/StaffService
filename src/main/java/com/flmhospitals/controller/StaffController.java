@@ -1,20 +1,19 @@
 package com.flmhospitals.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-
-import com.flmhospitals.model.Staff;
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffDetailsDto;
+import com.flmhospitals.model.Staff;
 import com.flmhospitals.service.StaffService;
 
 @RestController
@@ -43,17 +42,16 @@ public class StaffController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<StaffDetailsDto> registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
-		StaffDetailsDto registeredStaffDetailsDto = staffService.registerStaffDeatils(registerStaffDto);
-		
+		StaffDetailsDto registeredStaffDetailsDto = staffService.registerStaffDeatils(registerStaffDto);	
 		return  ResponseEntity.status(HttpStatus.CREATED).body(registeredStaffDetailsDto);
-
 		
 	}
 	
-	
-	
-	
-	
-	
+	@PutMapping("/update/{staffId}")
+	public ResponseEntity<StaffDetailsDto> updateStaff(@PathVariable String staffId,@RequestBody RegisterStaffDto staffDetailsDto) {
+		StaffDetailsDto updatedStaff = staffService.updateStaff(staffId, staffDetailsDto);
+		return ResponseEntity.ok(updatedStaff);
+		
+	}
 
 }

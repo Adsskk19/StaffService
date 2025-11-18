@@ -1,14 +1,11 @@
 package com.flmhospitals.service.impl;
 
 
-import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.flmhospitals.builder.StaffBuilder;
 import com.flmhospitals.builder.StaffDtoBuilder;
 import com.flmhospitals.dao.StaffRepository;
@@ -40,7 +37,8 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String name) {
 
-		List<Staff> staffs = staffRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name);
+		List<Staff> staffs = staffRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name,
+				name);
 
 		List<StaffDetailsDto> staffDetailsDtoList = new ArrayList<>();
 
@@ -55,10 +53,21 @@ public class StaffServiceImpl implements StaffService {
 		return ResponseEntity.ok(staffDetailsDtoList);
 	}
 
+
+	@Override
+	public StaffDetailsDto updateStaff(String staffId, RegisterStaffDto dto) {
+		Staff staff = staffRepository.findById(staffId)
+				.orElseThrow(() -> new StaffNotFoundException("Staff ID: " + staffId + " not found"));
+		
+		StaffDtoBuilder.updateStaffEntity(staff, dto);
+		Staff updatedStaff = staffRepository.save(staff);
+		return StaffDtoBuilder.buildStaffDetailsDto(updatedStaff);
+
+	}
+
 	@Override
 	public StaffDetailsDto registerStaffDeatils(RegisterStaffDto registerStaffDto) {
-		// TODO Auto-generated method stub
-		
+	
 		Staff staff =  StaffBuilder.buildStaffFromRegisterStaffDto(registerStaffDto);
 		boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);//
 		if (roleFlag) {
@@ -77,4 +86,5 @@ public class StaffServiceImpl implements StaffService {
 		
 	
 	
+
 }
