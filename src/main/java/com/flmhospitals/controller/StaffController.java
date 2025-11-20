@@ -47,7 +47,7 @@ public class StaffController {
 		return  ResponseEntity.status(HttpStatus.CREATED).body(registeredStaffDetailsDto);
 	}
 	
-	@DeleteMapping("/deleteStaff/{staffId}")
+	@DeleteMapping("/resign/{staffId}")
 	public ResponseEntity<String> deleteStaff(@PathVariable(name="staffId") String staffId) {
 		
 		 String deleteStaff = staffService.deleteStaff(staffId);
