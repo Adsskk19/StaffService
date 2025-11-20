@@ -1,14 +1,10 @@
 package com.flmhospitals.service.impl;
 
 
-import java.util.Optional;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.flmhospitals.builder.StaffBuilder;
 import com.flmhospitals.builder.StaffDtoBuilder;
 import com.flmhospitals.dao.StaffRepository;
@@ -60,7 +56,8 @@ public class StaffServiceImpl implements StaffService {
 		// TODO Auto-generated method stub
 		
 		Staff staff =  StaffBuilder.buildStaffFromRegisterStaffDto(registerStaffDto);
-		boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);//
+		
+		boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);
 		if (roleFlag) {
 			staff.setRole("Admin");
 			staff.setCanLogin(true);
@@ -73,6 +70,19 @@ public class StaffServiceImpl implements StaffService {
 		 Staff registerdStaff =  staffRepository.save(staff);
 		 
 		return StaffDtoBuilder.buildStaffDetailsDto(registerdStaff);
+	}
+
+	@Override
+	public String deleteStaff(String staffId) {
+		
+		Staff staff = staffRepository.findById(staffId)
+		.orElseThrow(()-> new StaffNotFoundException("No staff Found with the Id :"+staffId));
+
+		staff.setEmployeeActive(false);
+		
+		staffRepository.save(staff);
+		
+		return staff.getFirstName()+" "+staff.getLastName();
 	}
 		
 	
