@@ -16,6 +16,8 @@ public class StaffBuilder {
 		         .firstName(registerStaffDto.getFirstName())
 		         .lastName(registerStaffDto.getLastName())
 		         .phoneNumber(String.valueOf(registerStaffDto.getPhoneNumber()))
+		         .gender(registerStaffDto.getGender())
+		 		 .dateOfJoining(registerStaffDto.getDateOfJoining())
 		         .staffType(registerStaffDto.getStaffType())
 		         .specialization(registerStaffDto.getSpecialization())
 		         .experienceInYears(registerStaffDto.getExperienceInYears())
