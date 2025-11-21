@@ -2,7 +2,6 @@ package com.flmhospitals.service.impl;
 
 import java.time.LocalDate;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.flmhospitals.dao.DoctorScheduleRepository;
@@ -22,14 +21,14 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 	}
 
 	@Override
-	public ResponseEntity<String> isDoctorAvailable(String staffId, LocalDate date) {
+	public boolean isDoctorAvailable(String staffId, LocalDate date) {
 		Staff staff = staffService.getStaffByStaffId(staffId);
 		boolean isUnavailableDate = doctorScheduleRepository.existsByStaff_StaffIdAndUnavailableDate(staffId, date);
 
-		if (isUnavailableDate) {
-			return ResponseEntity.ok("Doctor is NOT AVAILABLE on " + date);
+		if (!isUnavailableDate) {
+			return true;
 		} else {
-			return ResponseEntity.ok("Doctor is AVAILABLE on " + date);
+			return false;
 		}
 	}
 

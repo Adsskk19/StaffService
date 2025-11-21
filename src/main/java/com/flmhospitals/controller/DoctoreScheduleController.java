@@ -21,10 +21,10 @@ public class DoctoreScheduleController {
 	}
 
 	@GetMapping("/isDoctorAvailable")
-	public ResponseEntity<String> isDoctorAvailable(@RequestParam("staffId") String staffId,
+	public ResponseEntity<Boolean> isDoctorAvailable(@RequestParam("staffId") String staffId,
 			@RequestParam("date") String date) {
 		LocalDate localDate = LocalDate.parse(date);
-		return doctorScheduleService.isDoctorAvailable(staffId, localDate);
+		return ResponseEntity.ok(doctorScheduleService.isDoctorAvailable(staffId, localDate));
 	}
 
 }
