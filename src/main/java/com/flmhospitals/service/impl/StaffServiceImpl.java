@@ -72,12 +72,15 @@ public class StaffServiceImpl implements StaffService {
 
 	@Override
 	public StaffDetailsDto updateStaff(String staffId, RegisterStaffDto dto) {
-		Staff staff = staffRepository.findById(staffId)
+		Staff existingStaff = staffRepository.findById(staffId)
 				.orElseThrow(() -> new StaffNotFoundException("Staff ID: " + staffId + " not found"));
 
-		StaffDtoBuilder.updateStaffEntity(staff, dto);
-		Staff updatedStaff = staffRepository.save(staff);
-		return StaffDtoBuilder.buildStaffDetailsDto(updatedStaff);
+		Staff updatedStaff = StaffBuilder.buildStaffFromRegisterStaffDto(dto);
+		updatedStaff.setStaffId(existingStaff.getStaffId());
+		updatedStaff.getStaffAddress().setStaffAddressId(existingStaff.getStaffAddress().getStaffAddressId());
+		updatedStaff.getStaffDetails().setStaffDetailsId(existingStaff.getStaffDetails().getStaffDetailsId());
+		Staff savedStaff = staffRepository.save(updatedStaff);
+		return StaffDtoBuilder.buildStaffDetailsDto(savedStaff);
 
 	}
 
