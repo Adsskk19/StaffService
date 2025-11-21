@@ -1,6 +1,7 @@
 package com.flmhospitals.service.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -21,19 +22,33 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 	}
 
 	@Override
-	 public ResponseEntity<String> markDoctorAvailable(String staffId, List<LocalDate> dates) {
-	  
-	  List<DoctorSchedule> unavailableList = doctorScheduleRepository.findByStaff_StaffIdAndUnavailableDateIn(staffId,dates);
+	public ResponseEntity<String> markDoctorAvailable(String staffId, List<LocalDate> dates) {
 
-	  if (unavailableList.isEmpty()) {
-	   return ResponseEntity.ok("Doctor is already available on all selected dates.");
-	  }
+		LocalDate today = LocalDate.now();
+		for(LocalDate date : dates) {
+			if(date.isBefore(today)) {
+				return ResponseEntity.ok("Date "+date+" is earlier than current date, please provide the valid date");
+			}
+		}
+		
+		List<DoctorSchedule> unavailableDoctorslList = doctorScheduleRepository.findByStaff_StaffId(staffId);
+		List<DoctorSchedule> unavailableList = new ArrayList<>(); 
+		if (!unavailableDoctorslList.isEmpty()) {
+			for (DoctorSchedule list : unavailableDoctorslList) {
+				if (dates.contains(list.getUnavailableDate()))
+					unavailableList.add(list);
+			}
+		} else {
+			return ResponseEntity.ok("Invalid StaffId");
+		}
 
-	  doctorScheduleRepository.deleteAll(unavailableList);
+		if (unavailableList.isEmpty()) {
+			return ResponseEntity.ok("Doctor is already available on all selected dates.");
+		}
 
-	  return ResponseEntity.ok("Doctor marked available on selected dates successfully.");
-	 }
+		doctorScheduleRepository.deleteAll(unavailableList);
 
-
+		return ResponseEntity.ok("Doctor marked available on selected dates successfully.");
+	}
 
 }
