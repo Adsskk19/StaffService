@@ -1,6 +1,7 @@
 package com.flmhospitals.service.impl;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,7 @@ public class StaffServiceImpl implements StaffService {
 		return StaffDtoBuilder.buildStaffDetailsDto(registerdStaff);
 	}
 
+
 	@Override
 	public StaffDetailsDto updateStaff(String staffId, RegisterStaffDto dto) {
 		Staff existingStaff = staffRepository.findById(staffId)
@@ -97,5 +99,6 @@ public class StaffServiceImpl implements StaffService {
 		return staff.getFirstName() + " " + staff.getLastName();
 
 	}
+
 
 }
