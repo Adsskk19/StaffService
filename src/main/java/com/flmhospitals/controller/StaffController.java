@@ -3,6 +3,7 @@ package com.flmhospitals.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,6 @@ public class StaffController {
 	public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(
 			@RequestParam(name = "name", required = true) String name) {
 		return staffService.searchByStaffFirstNameOrLastName(name);
-
 	}
 	
 	@PostMapping("/register")
@@ -52,6 +52,15 @@ public class StaffController {
 		StaffDetailsDto updatedStaff = staffService.updateStaff(staffId, staffDetailsDto);
 		return ResponseEntity.ok(updatedStaff);
 		
+	}
+	
+	@DeleteMapping("/resign/{staffId}")
+	public ResponseEntity<String> deleteStaff(@PathVariable(name="staffId") String staffId) {
+		
+		 String deleteStaff = staffService.deleteStaff(staffId);
+		 
+		 return ResponseEntity.status(HttpStatus.OK).body(deleteStaff);
+
 	}
 
 }

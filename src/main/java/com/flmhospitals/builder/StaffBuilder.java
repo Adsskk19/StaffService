@@ -1,5 +1,6 @@
 package com.flmhospitals.builder;
 
+import org.springframework.beans.BeanUtils;
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffAddressDto;
 import com.flmhospitals.model.Staff;
@@ -11,6 +12,7 @@ public class StaffBuilder {
 	public static Staff buildStaffFromRegisterStaffDto(RegisterStaffDto registerStaffDto){
 		
 		return Staff.builder()
+
 		         .firstName(registerStaffDto.getFirstName())
 		         .lastName(registerStaffDto.getLastName())
 		         .phoneNumber(String.valueOf(registerStaffDto.getPhoneNumber()))
@@ -20,20 +22,19 @@ public class StaffBuilder {
 		         .staffAddress(buildStaffAdddressFromStaffAddressDto(registerStaffDto.getStaffAddressDto()))
 		         .staffDetails(buildStaffDetailsFromStaffDetailsDto(registerStaffDto.getEmail()))
 		         .build();
-		
+
 		
 	}
 	
 	public static StaffAddress buildStaffAdddressFromStaffAddressDto(StaffAddressDto staffAddressDto) {
 		
-		return StaffAddress.builder()
-				.landmark(staffAddressDto.getLandmark())
-				.city(staffAddressDto.getCity())
-				.state(staffAddressDto.getState())
-				.country(staffAddressDto.getCountry())
-				.pinCode(staffAddressDto.getPinCode())
-				.build();
-							
+
+		StaffAddress staffAddress = new StaffAddress();
+		
+		 BeanUtils.copyProperties(staffAddressDto, staffAddress);
+		
+		return staffAddress;
+
 	}
 	
 	public static StaffDetails buildStaffDetailsFromStaffDetailsDto(String email) {
