@@ -23,8 +23,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 	@Override
 	public boolean isDoctorAvailable(String staffId, LocalDate date) {
 		Staff staff = staffService.getStaffByStaffId(staffId);
-		boolean isAvailable= !doctorScheduleRepository.existsByStaff_StaffIdAndUnavailableDate(staffId, date);
-
+		boolean isAvailable = !doctorScheduleRepository.existsByStaff_StaffIdAndUnavailableDate(staffId, date);
 		return isAvailable;
 	}
 
