@@ -79,10 +79,10 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 	@Override
 	public List<LocalDate> markDoctorUnavailable(String doctorId, List<LocalDate> listOfUnavailabeDates) {
 
-		Staff staff = staffRepository.findById(doctorId)
-				.orElseThrow(() -> new StaffNotFoundException("No Doctor found with Id " + doctorId));
+	    Staff staff = staffRepository.findById(doctorId)
+	            .orElseThrow(() -> new StaffNotFoundException("No Doctor found with Id " + doctorId));
 
-		List<DoctorSchedule> listOfSchedules = new ArrayList<>();
+	    List<DoctorSchedule> listOfSchedules = new ArrayList<>();
 
 		for (LocalDate unavailableDate : listOfUnavailabeDates) {
 
@@ -104,7 +104,9 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 		doctorScheduleRepository.saveAll(listOfSchedules);
 
 		return listOfSchedules.stream().map(DoctorSchedule::getUnavailableDate).toList();
+
 	}
+
 
 	public boolean validateUnavailableDate(LocalDate date) {
 
