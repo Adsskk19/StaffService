@@ -9,4 +9,6 @@ public interface DoctorScheduleService {
 
 	ResponseEntity<String> markDoctorAvailable(String staffId, List<LocalDate> dates);
 
+	public boolean isDoctorAvailable(String staffId, LocalDate date);
+
 }

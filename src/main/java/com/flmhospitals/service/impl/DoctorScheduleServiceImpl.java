@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.flmhospitals.dao.DoctorScheduleRepository;
 import com.flmhospitals.model.DoctorSchedule;
+import com.flmhospitals.model.Staff;
 import com.flmhospitals.service.DoctorScheduleService;
 import com.flmhospitals.service.StaffService;
 
@@ -16,9 +16,11 @@ import com.flmhospitals.service.StaffService;
 public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 
 	private final DoctorScheduleRepository doctorScheduleRepository;
+	private final StaffService staffService;
 
-	public DoctorScheduleServiceImpl(DoctorScheduleRepository doctorScheduleRepository) {
+	public DoctorScheduleServiceImpl(DoctorScheduleRepository doctorScheduleRepository, StaffService staffService) {
 		this.doctorScheduleRepository = doctorScheduleRepository;
+		this.staffService = staffService;
 	}
 
 	@Override
@@ -49,6 +51,13 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 		doctorScheduleRepository.deleteAll(unavailableList);
 
 		return ResponseEntity.ok("Doctor marked available on selected dates successfully.");
+	}
+
+	@Override
+	public boolean isDoctorAvailable(String staffId, LocalDate date) {
+		Staff staff = staffService.getStaffByStaffId(staffId);
+		boolean isAvailable = !doctorScheduleRepository.existsByStaff_StaffIdAndUnavailableDate(staffId, date);
+		return isAvailable;
 	}
 
 }
