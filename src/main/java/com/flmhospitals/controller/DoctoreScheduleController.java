@@ -39,7 +39,7 @@ public class DoctoreScheduleController {
 	}
 
 	@PostMapping("/{doctorId}/unavailable")
-	public ResponseEntity<List<LocalDate>> markOwnerUnavailable(@PathVariable String doctorId,
+	public ResponseEntity<List<LocalDate>> markDoctorUnavailable(@PathVariable String doctorId,
 			@RequestBody List<LocalDate> listOfUnavailableDates) {
 
 		List<LocalDate> doctorScheduleResponse = doctorScheduleService.markDoctorUnavailable(doctorId,
