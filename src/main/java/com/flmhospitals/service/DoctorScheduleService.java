@@ -2,7 +2,6 @@ package com.flmhospitals.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 
 public interface DoctorScheduleService {
@@ -10,5 +9,9 @@ public interface DoctorScheduleService {
 	ResponseEntity<String> markDoctorAvailable(String staffId, List<LocalDate> dates);
 
 	public boolean isDoctorAvailable(String staffId, LocalDate date);
+
+	List<LocalDate> markDoctorUnavailable(String doctorId,List<LocalDate> listOfUnavailableDates);
+	
+
 
 }

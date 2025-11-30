@@ -10,7 +10,7 @@ import com.flmhospitals.model.DoctorSchedule;
 
 @Repository
 public interface DoctorScheduleRepository extends JpaRepository<DoctorSchedule, Long> {
-
+	
 	List<DoctorSchedule> findByStaff_StaffId(String staffId);
 
 	boolean existsByStaff_StaffIdAndUnavailableDate(String staffId, LocalDate unavailableDate);
