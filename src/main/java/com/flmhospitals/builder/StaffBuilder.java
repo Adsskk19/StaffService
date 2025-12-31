@@ -11,7 +11,7 @@ public class StaffBuilder {
 
 	public static Staff buildStaffFromRegisterStaffDto(RegisterStaffDto registerStaffDto){
 		
-		return Staff.builder()
+		 Staff staff = Staff.builder()
 
 		.firstName(registerStaffDto.getFirstName())
 		.lastName(registerStaffDto.getLastName())
@@ -21,12 +21,13 @@ public class StaffBuilder {
 		.staffType(registerStaffDto.getStaffType())
 		.specialization(registerStaffDto.getSpecialization())
 		.experienceInYears(registerStaffDto.getExperienceInYears())
-		.dateOfJoining(registerStaffDto.getDateOfJoining())
 		.staffAddress(buildStaffAdddressFromStaffAddressDto(registerStaffDto.getStaffAddressDto()))
 		.staffDetails(buildStaffDetailsFromStaffDetailsDto(registerStaffDto.getEmail()))
 		.build();
 
-		
+		 System.out.println(staff);
+		 
+		 return staff;
 	}
 	
 	public static StaffAddress buildStaffAdddressFromStaffAddressDto(StaffAddressDto staffAddressDto) {
@@ -34,8 +35,12 @@ public class StaffBuilder {
 
 		StaffAddress staffAddress = new StaffAddress();
 		
+		System.out.println(staffAddressDto);
+		
 		 BeanUtils.copyProperties(staffAddressDto, staffAddress);
 		
+		 System.out.println(staffAddress);
+		 
 		return staffAddress;
 
 	}

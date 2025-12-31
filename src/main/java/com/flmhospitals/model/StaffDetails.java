@@ -34,6 +34,12 @@ public class StaffDetails {
 		this.email = email;
 		this.password = password;
 	}
+
+	public StaffDetails(String email) {
+		super();
+		this.email = email;
+	}
     
+	
     
 }

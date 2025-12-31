@@ -1,12 +1,10 @@
 package com.flmhospitals.builder;
 
 import org.springframework.beans.BeanUtils;
-import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffAddressDto;
 import com.flmhospitals.dto.StaffDetailsDto;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.model.StaffAddress;
-import com.flmhospitals.model.StaffDetails;
 
 public class StaffDtoBuilder {
 
@@ -21,6 +19,7 @@ public class StaffDtoBuilder {
 				.role(staff.getRole())
 				.gender(staff.getGender())
 				.experienceInYears(staff.getExperienceInYears())
+				.dateOfJoining(staff.getDateOfJoining())
 				.email(staff.getStaffDetails().getEmail())
 				.specialization(staff.getSpecialization())
 				.staffType(staff.getStaffType())
