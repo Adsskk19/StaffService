@@ -62,5 +62,11 @@ public class StaffController {
 		 return ResponseEntity.status(HttpStatus.OK).body(deleteStaff);
 
 	}
+	
+	@GetMapping("/getDoctorName/{doctorId}")
+	public String getDoctorName(@PathVariable(name="doctorId") String doctorId) {
+		
+		return staffService.getDoctorName(doctorId);
+	}
 
 }

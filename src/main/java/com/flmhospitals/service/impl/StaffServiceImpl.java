@@ -14,6 +14,7 @@ import com.flmhospitals.dao.StaffRepository;
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.StaffDetailsDto;
 import com.flmhospitals.enums.StaffType;
+import com.flmhospitals.exception.DoctorNotFoundException;
 import com.flmhospitals.exception.StaffNotFoundException;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.service.StaffService;
@@ -100,6 +101,15 @@ public class StaffServiceImpl implements StaffService {
 
 		return staff.getFirstName() + " " + staff.getLastName();
 
+	}
+
+	@Override
+	public String getDoctorName(String doctorId) {
+		
+		Staff staff = staffRepository.findById(doctorId)
+		.orElseThrow(()-> new DoctorNotFoundException("no doctor with the id: "+ doctorId));
+		
+		return staff.getFirstName()+" "+staff.getLastName();
 	}
 
 
