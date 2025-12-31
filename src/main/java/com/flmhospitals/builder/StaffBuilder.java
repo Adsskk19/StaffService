@@ -11,7 +11,7 @@ public class StaffBuilder {
 
 	public static Staff buildStaffFromRegisterStaffDto(RegisterStaffDto registerStaffDto){
 		
-		 Staff staff = Staff.builder()
+		return Staff.builder()
 
 		.firstName(registerStaffDto.getFirstName())
 		.lastName(registerStaffDto.getLastName())
@@ -25,9 +25,6 @@ public class StaffBuilder {
 		.staffDetails(buildStaffDetailsFromStaffDetailsDto(registerStaffDto.getEmail()))
 		.build();
 
-		 System.out.println(staff);
-		 
-		 return staff;
 	}
 	
 	public static StaffAddress buildStaffAdddressFromStaffAddressDto(StaffAddressDto staffAddressDto) {
