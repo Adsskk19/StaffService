@@ -32,12 +32,8 @@ public class StaffBuilder {
 
 		StaffAddress staffAddress = new StaffAddress();
 		
-		System.out.println(staffAddressDto);
-		
 		 BeanUtils.copyProperties(staffAddressDto, staffAddress);
-		
-		 System.out.println(staffAddress);
-		 
+
 		return staffAddress;
 
 	}
