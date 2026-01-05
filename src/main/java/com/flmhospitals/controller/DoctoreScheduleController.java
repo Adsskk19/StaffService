@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flmhospitals.service.DoctorScheduleService;
 
 @RestController
-@RequestMapping(""
-		+ "")
+@RequestMapping("/doctorSchedule")
 public class DoctoreScheduleController {
 
 	private final DoctorScheduleService doctorScheduleService;
@@ -34,7 +33,10 @@ public class DoctoreScheduleController {
 	@GetMapping("/isDoctorAvailable")
 	public ResponseEntity<Boolean> isDoctorAvailable(@RequestParam("staffId") String staffId,
 			@RequestParam("date") String date) {
+		
+	
 		LocalDate localDate = LocalDate.parse(date);
+		
 		return ResponseEntity.ok(doctorScheduleService.isDoctorAvailable(staffId, localDate));
 	}
 

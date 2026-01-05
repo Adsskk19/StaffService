@@ -91,5 +91,6 @@ public class Staff {
 		this.isEmployeeActive = isEmployeeActive;
 		this.staffAddress = staffAddress;
 		this.staffDetails = staffDetails;
-	}	
+	}
+
 }
