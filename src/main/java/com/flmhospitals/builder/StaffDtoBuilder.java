@@ -23,6 +23,8 @@ public class StaffDtoBuilder {
 				.email(staff.getStaffDetails().getEmail())
 				.specialization(staff.getSpecialization())
 				.staffType(staff.getStaffType())
+				.isEmployeeActive(staff.isEmployeeActive())
+				.canLogin(staff.isCanLogin())
 				.staffAddressDto(buildAddressDto(staff.getStaffAddress()))
 				.build();
 

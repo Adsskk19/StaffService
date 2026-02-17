@@ -60,13 +60,13 @@ public class StaffServiceImpl implements StaffService {
 	public StaffDetailsDto registerStaffDeatils(RegisterStaffDto registerStaffDto) {
 
 		Staff staff = StaffBuilder.buildStaffFromRegisterStaffDto(registerStaffDto);
-		boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);
-		if (roleFlag) {
-			staff.setRole("Admin");
-			staff.setCanLogin(true);
-		} else {
-			staff.setRole("Non-Admin");
-		}
+		//boolean roleFlag = registerStaffDto.getStaffType().equals(StaffType.DOCTOR);
+//		if (roleFlag) {
+//			staff.setRole("Admin");
+//			staff.setCanLogin(true);
+//		} else {
+//			staff.setRole("Non-Admin");
+//		}
 		staff.setEmployeeActive(true);
 
 		Staff registerdStaff = staffRepository.save(staff);
@@ -80,10 +80,10 @@ public class StaffServiceImpl implements StaffService {
 		Staff existingStaff = staffRepository.findById(staffId)
 				.orElseThrow(() -> new StaffNotFoundException("Staff ID: " + staffId + " not found"));
 
-		Staff updatedStaff = StaffBuilder.buildStaffFromRegisterStaffDto(dto);
-		updatedStaff.setStaffId(existingStaff.getStaffId());
-		updatedStaff.getStaffAddress().setStaffAddressId(existingStaff.getStaffAddress().getStaffAddressId());
-		updatedStaff.getStaffDetails().setStaffDetailsId(existingStaff.getStaffDetails().getStaffDetailsId());
+		Staff updatedStaff = StaffBuilder.updateStaffBuilder(dto, existingStaff);
+		//updatedStaff.setStaffId(existingStaff.getStaffId());
+//		updatedStaff.getStaffAddress().setStaffAddressId(existingStaff.getStaffAddress().getStaffAddressId());
+//		updatedStaff.getStaffDetails().setStaffDetailsId(existingStaff.getStaffDetails().getStaffDetailsId());
 		Staff savedStaff = staffRepository.save(updatedStaff);
 		return StaffDtoBuilder.buildStaffDetailsDto(savedStaff);
 
@@ -110,6 +110,12 @@ public class StaffServiceImpl implements StaffService {
 		.orElseThrow(()-> new DoctorNotFoundException("no doctor with the id: "+ doctorId));
 		
 		return staff.getFirstName()+" "+staff.getLastName();
+	}
+
+	@Override
+	public List<StaffDetailsDto> getAllStaff() {
+		List<StaffDetailsDto> staffDetailsList = staffRepository.findAll().stream().map(staff -> StaffDtoBuilder.buildStaffDetailsDto(staff)).toList();
+		return staffDetailsList;
 	}
 
 
