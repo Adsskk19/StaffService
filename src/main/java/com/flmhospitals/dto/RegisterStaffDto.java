@@ -20,7 +20,7 @@ public class RegisterStaffDto {
 	
 	private String phoneNumber;
 	
-//	private String role;
+	private String role;
 	
 	private String gender;
 	

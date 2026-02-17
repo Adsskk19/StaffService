@@ -17,9 +17,11 @@ public interface StaffService {
 	
 	 StaffDetailsDto registerStaffDeatils(RegisterStaffDto registerStaffDto);
 
-	String deleteStaff(String staffId);
+	 String deleteStaff(String staffId);
 
-	String getDoctorName(String doctorId);
+	 String getDoctorName(String doctorId);
+
+	 List<StaffDetailsDto> getAllStaff();
 	
 	
 
