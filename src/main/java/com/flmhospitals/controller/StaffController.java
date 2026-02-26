@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.flmhospitals.dto.ForgotPasswordRequestDto;
 import com.flmhospitals.dto.RegisterStaffDto;
+import com.flmhospitals.dto.ResetPasswordRequest;
 import com.flmhospitals.dto.StaffDetailsDto;
+import com.flmhospitals.dto.VerifyOtpRequest;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.service.StaffService;
 
@@ -76,5 +80,29 @@ public class StaffController {
 		
 		return staffService.getDoctorName(doctorId);
 	}
+	
+	@PostMapping("/forgot-password")
+	public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+		staffService.sendOtp(request.getEmail());
+	    return ResponseEntity.ok("OTP sent to registered email, If exists");
+	}
+	
+	@PostMapping("/verify-otp")
+    public ResponseEntity<String> verifyOtp(
+            @RequestBody VerifyOtpRequest otpRequest) {
+
+        staffService.verifyOtp(otpRequest);
+
+        return ResponseEntity.ok("OTP verified successfully.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @RequestBody ResetPasswordRequest request) {
+
+        staffService.resetPassword(request);
+
+        return ResponseEntity.ok("Password reset successfully.");
+    }
 
 }
