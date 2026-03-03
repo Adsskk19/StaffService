@@ -18,6 +18,8 @@ import com.flmhospitals.builder.StaffDtoBuilder;
 import com.flmhospitals.dao.StaffDetailsRepository;
 import com.flmhospitals.dao.StaffRepository;
 import com.flmhospitals.dto.EmailRequestDto;
+import com.flmhospitals.dto.LoginRequest;
+import com.flmhospitals.dto.LoginResponse;
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.ResetPasswordRequest;
 import com.flmhospitals.dto.StaffDetailsDto;
@@ -29,6 +31,7 @@ import com.flmhospitals.exception.StaffNotFoundException;
 import com.flmhospitals.feignclient.NotificationFeignClient;
 import com.flmhospitals.model.Staff;
 import com.flmhospitals.model.StaffDetails;
+import com.flmhospitals.security.JwtService;
 import com.flmhospitals.service.StaffService;
 
 import jakarta.transaction.Transactional;
@@ -42,13 +45,18 @@ public class StaffServiceImpl implements StaffService {
 	
 	private final StaffDetailsRepository staffDetailsRepository;
 	
+	private final JwtService jwtService;
 	
-
-	public StaffServiceImpl(StaffRepository staffRepository,NotificationFeignClient notificationFeignClient, StaffDetailsRepository staffDetailsRepository) {
+	
+	public StaffServiceImpl(StaffRepository staffRepository,
+			NotificationFeignClient notificationFeignClient,
+			StaffDetailsRepository staffDetailsRepository,
+			JwtService jwtService) {
 		
 		this.staffRepository = staffRepository;
 		this.notificationFeignClient = notificationFeignClient;
 		this.staffDetailsRepository = staffDetailsRepository;
+		this.jwtService = jwtService;
 		
 	}
 
@@ -217,5 +225,43 @@ public class StaffServiceImpl implements StaffService {
         staffDetailsRepository.save(staff);
     }
 
+	@Override
+	public LoginResponse login(LoginRequest request) {
+
+	    String normalizedEmail = request.getEmail().trim().toLowerCase();
+
+	    StaffDetails staffDetails = staffDetailsRepository.findByEmail(normalizedEmail)
+	            .orElseThrow(() -> new ResponseStatusException(
+	                    HttpStatus.UNAUTHORIZED,
+	                    "Invalid email or password"
+	            ));
+
+	    if (!staffDetails.getPassword().equals(request.getPassword())) {
+	        throw new ResponseStatusException(
+	                HttpStatus.UNAUTHORIZED,
+	                "Invalid email or password"
+	        );
+	    }
+
+	    Staff staff = staffRepository.findAll().stream()
+	            .filter(s -> s.getEmail().equalsIgnoreCase(normalizedEmail))
+	            .findFirst()
+	            .orElseThrow(() -> new ResponseStatusException(
+	                    HttpStatus.UNAUTHORIZED,
+	                    "Invalid email or password"
+	            ));
+
+	    if (!staff.isEmployeeActive() || !staff.isCanLogin()) {
+	        throw new ResponseStatusException(
+	                HttpStatus.FORBIDDEN,
+	                "Staff is not allowed to login"
+	        );
+	    }
+
+	    String token = jwtService.generateToken(staff.getStaffId(), staff.getRole());
+
+	    return new LoginResponse(token, 3600000L, staff.getRole(), staff.getStaffId());
+	}
+	
 
 }

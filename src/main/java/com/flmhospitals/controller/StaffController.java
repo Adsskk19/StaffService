@@ -3,7 +3,6 @@ package com.flmhospitals.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.flmhospitals.dto.LoginRequest;
+import com.flmhospitals.dto.LoginResponse;
 import com.flmhospitals.dto.ForgotPasswordRequestDto;
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.ResetPasswordRequest;
@@ -38,6 +39,12 @@ public class StaffController {
 		List<StaffDetailsDto> allStaff = staffService.getAllStaff();
 		return ResponseEntity.ok(allStaff);
 		
+	}
+	
+	@PostMapping("/auth/login")
+	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+		LoginResponse response = staffService.login(request);
+		return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping("/{staffId}")
