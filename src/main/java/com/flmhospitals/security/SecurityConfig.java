@@ -40,8 +40,7 @@ public class SecurityConfig {
                                 "/staff/reset-password"
                         ).permitAll()
                         .anyRequest().authenticated()
-                )
-                .httpBasic(Customizer.withDefaults());
+                );
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
