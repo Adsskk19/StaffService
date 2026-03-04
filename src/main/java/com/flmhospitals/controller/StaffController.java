@@ -3,6 +3,7 @@ package com.flmhospitals.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +60,7 @@ public class StaffController {
 		return staffService.searchByStaffFirstNameOrLastName(name);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/register")
 	public ResponseEntity<StaffDetailsDto> registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
 		StaffDetailsDto registeredStaffDetailsDto = staffService.registerStaffDeatils(registerStaffDto);	
@@ -66,6 +68,7 @@ public class StaffController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/update/{staffId}")
 	public ResponseEntity<StaffDetailsDto> updateStaff(@PathVariable String staffId,@RequestBody RegisterStaffDto staffDetailsDto) {
 		StaffDetailsDto updatedStaff = staffService.updateStaff(staffId, staffDetailsDto);
@@ -73,6 +76,7 @@ public class StaffController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/resign/{staffId}")
 	public ResponseEntity<String> deleteStaff(@PathVariable(name="staffId") String staffId) {
 		
