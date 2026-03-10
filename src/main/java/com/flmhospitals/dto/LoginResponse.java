@@ -11,5 +11,6 @@ public class LoginResponse {
     private long expiresInMillis;
     private String role;
     private String staffId;
+    private boolean requirePasswordReset;
 }
 

@@ -26,6 +26,8 @@ public interface StaffService {
 	 String deleteStaff(String staffId);
 
 	 String getDoctorName(String doctorId);
+	 
+	 String getSpecialization(String staffId);
 
 	 List<StaffDetailsDto> getAllStaff();
 

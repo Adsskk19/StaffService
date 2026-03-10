@@ -34,6 +34,8 @@ public class StaffDetails {
     private String resetOtp;
     
     private LocalDateTime otpExpiryTime;
+    
+    private boolean requirePasswordReset = false;
 
 	public StaffDetails(String email, String password, StaffAddress address, String resetOtp, LocalDateTime otpExpiryTime) {
 		super();

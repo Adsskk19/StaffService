@@ -43,9 +43,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String subject = jwtService.extractSubject(token);
             String role = jwtService.extractRole(token);
 
+            System.out.println("JWT Filter - Subject: " + subject);
+            System.out.println("JWT Filter - Extracted Role: " + role);
+
             if (subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                // Ensure role is uppercase for Spring Security
+                String normalizedRole = (role != null) ? role.toUpperCase() : null;
                 SimpleGrantedAuthority authority =
-                        role != null ? new SimpleGrantedAuthority("ROLE_" + role) : null;
+                        normalizedRole != null ? new SimpleGrantedAuthority("ROLE_" + normalizedRole) : null;
+
+                System.out.println("JWT Filter - Normalized Role: " + normalizedRole);
+                System.out.println("JWT Filter - Authority: " + (authority != null ? authority.getAuthority() : "null"));
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
@@ -56,6 +64,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                
+                System.out.println("JWT Filter - Authentication set with authorities: " + authentication.getAuthorities());
             }
         }
 

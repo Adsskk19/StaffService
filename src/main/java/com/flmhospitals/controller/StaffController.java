@@ -60,6 +60,19 @@ public class StaffController {
 		return staffService.searchByStaffFirstNameOrLastName(name);
 	}
 	
+	@GetMapping("/test-auth")
+	public ResponseEntity<String> testAuth() {
+		org.springframework.security.core.Authentication auth = 
+			org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+		
+		String authorities = auth.getAuthorities().stream()
+			.map(a -> a.getAuthority())
+			.collect(java.util.stream.Collectors.joining(", "));
+		
+		return ResponseEntity.ok("Authenticated as: " + auth.getName() + 
+			" with authorities: " + authorities);
+	}
+	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/register")
 	public ResponseEntity<StaffDetailsDto> registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
@@ -90,6 +103,11 @@ public class StaffController {
 	public String getDoctorName(@PathVariable(name="doctorId") String doctorId) {
 		
 		return staffService.getDoctorName(doctorId);
+	}
+	
+	@GetMapping("/getSpecialization/{staffId}")
+	public String getSpecialization(@PathVariable(name="staffId") String staffId) {
+		return staffService.getSpecialization(staffId);
 	}
 	
 	@PostMapping("/forgot-password")
