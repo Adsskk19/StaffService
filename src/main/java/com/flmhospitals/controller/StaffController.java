@@ -3,7 +3,7 @@ package com.flmhospitals.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.flmhospitals.dto.LoginRequest;
+import com.flmhospitals.dto.LoginResponse;
 import com.flmhospitals.dto.ForgotPasswordRequestDto;
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.ResetPasswordRequest;
@@ -40,6 +42,12 @@ public class StaffController {
 		
 	}
 	
+	@PostMapping("/auth/login")
+	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+		LoginResponse response = staffService.login(request);
+		return ResponseEntity.ok(response);
+	}
+	
 	@GetMapping("/{staffId}")
 	public Staff getStaffByStaffId(@PathVariable String staffId) {
 		return staffService.getStaffByStaffId(staffId);
@@ -52,6 +60,20 @@ public class StaffController {
 		return staffService.searchByStaffFirstNameOrLastName(name);
 	}
 	
+	@GetMapping("/test-auth")
+	public ResponseEntity<String> testAuth() {
+		org.springframework.security.core.Authentication auth = 
+			org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+		
+		String authorities = auth.getAuthorities().stream()
+			.map(a -> a.getAuthority())
+			.collect(java.util.stream.Collectors.joining(", "));
+		
+		return ResponseEntity.ok("Authenticated as: " + auth.getName() + 
+			" with authorities: " + authorities);
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/register")
 	public ResponseEntity<StaffDetailsDto> registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
 		StaffDetailsDto registeredStaffDetailsDto = staffService.registerStaffDeatils(registerStaffDto);	
@@ -59,6 +81,7 @@ public class StaffController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/update/{staffId}")
 	public ResponseEntity<StaffDetailsDto> updateStaff(@PathVariable String staffId,@RequestBody RegisterStaffDto staffDetailsDto) {
 		StaffDetailsDto updatedStaff = staffService.updateStaff(staffId, staffDetailsDto);
@@ -66,6 +89,7 @@ public class StaffController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/resign/{staffId}")
 	public ResponseEntity<String> deleteStaff(@PathVariable(name="staffId") String staffId) {
 		
@@ -79,6 +103,11 @@ public class StaffController {
 	public String getDoctorName(@PathVariable(name="doctorId") String doctorId) {
 		
 		return staffService.getDoctorName(doctorId);
+	}
+	
+	@GetMapping("/getSpecialization/{staffId}")
+	public String getSpecialization(@PathVariable(name="staffId") String staffId) {
+		return staffService.getSpecialization(staffId);
 	}
 	
 	@PostMapping("/forgot-password")

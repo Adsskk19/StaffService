@@ -2,6 +2,7 @@ package com.flmhospitals.dao;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,5 +15,7 @@ public interface DoctorScheduleRepository extends JpaRepository<DoctorSchedule, 
 	List<DoctorSchedule> findByStaff_StaffId(String staffId);
 
 	boolean existsByStaff_StaffIdAndUnavailableDate(String staffId, LocalDate unavailableDate);
+	
+	Optional<DoctorSchedule> findByStaff_StaffIdAndUnavailableDate(String staffId, LocalDate unavailableDate);
 
 }

@@ -53,5 +53,11 @@ public class DoctoreScheduleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(doctorScheduleResponse);
 	}
 
+	@GetMapping("/{doctorId}/unavailable-dates")
+	public ResponseEntity<List<LocalDate>> getDoctorUnavailableDates(@PathVariable String doctorId) {
+		List<LocalDate> unavailableDates = doctorScheduleService.getDoctorUnavailableDates(doctorId);
+		return ResponseEntity.ok(unavailableDates);
+	}
+
 }
 

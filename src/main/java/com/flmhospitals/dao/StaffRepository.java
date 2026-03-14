@@ -1,6 +1,7 @@
 package com.flmhospitals.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,12 @@ public interface StaffRepository extends JpaRepository<Staff, String> {
 	String findLastStaffId();
 
 	List<Staff> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String firstName, String lastName);
+	
+	Optional<Staff> findByStaffId(String staffId);
+	
+	Optional<Staff> findByEmail(String email);
+	
+	Optional<Staff> findByPhoneNumber(String phoneNumber);
+	
+	List<Staff> findByIsEmployeeActiveTrue();
 }

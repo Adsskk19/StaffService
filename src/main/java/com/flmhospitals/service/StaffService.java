@@ -2,7 +2,11 @@ package com.flmhospitals.service;
 
 
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+
+import com.flmhospitals.dto.LoginRequest;
+import com.flmhospitals.dto.LoginResponse;
 import com.flmhospitals.dto.RegisterStaffDto;
 import com.flmhospitals.dto.ResetPasswordRequest;
 import com.flmhospitals.dto.StaffDetailsDto;
@@ -13,7 +17,7 @@ public interface StaffService {
 	
 	 Staff getStaffByStaffId(String staffId);
 
-	 public ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String name);
+	 ResponseEntity<List<StaffDetailsDto>> searchByStaffFirstNameOrLastName(String name);
 	 
 	 StaffDetailsDto updateStaff(String staffId,RegisterStaffDto dto);
 	
@@ -22,6 +26,8 @@ public interface StaffService {
 	 String deleteStaff(String staffId);
 
 	 String getDoctorName(String doctorId);
+	 
+	 String getSpecialization(String staffId);
 
 	 List<StaffDetailsDto> getAllStaff();
 
@@ -30,8 +36,8 @@ public interface StaffService {
 	 void verifyOtp(VerifyOtpRequest request);
 
 	 void resetPassword(ResetPasswordRequest request);  
-	
-	
-
-
+	 
+	 LoginResponse login(LoginRequest request);
+		
 }
+

@@ -3,6 +3,7 @@ package com.flmhospitals.service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,38 +39,64 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 	@Override
 	public ResponseEntity<String> markDoctorAvailable(String staffId, List<LocalDate> dates) {
 
-		LocalDate today = LocalDate.now();
-		for(LocalDate date : dates) {
-			if(date.isBefore(today)) {
-				return ResponseEntity.ok("Date "+date+" is earlier than current date, please provide the valid date");
-			}
-		}
-		
-		List<DoctorSchedule> unavailableDoctorslList = doctorScheduleRepository.findByStaff_StaffId(staffId);
-		List<DoctorSchedule> unavailableList = new ArrayList<>(); 
-		if (!unavailableDoctorslList.isEmpty()) {
-			for (DoctorSchedule list : unavailableDoctorslList) {
-				if (dates.contains(list.getUnavailableDate()))
-					unavailableList.add(list);
-			}
-		} else {
-			return ResponseEntity.ok("Invalid StaffId");
-		}
+	    // Validate input
+	    if (dates == null || dates.isEmpty()) {
+	        throw new IllegalArgumentException("Please provide at least one date");
+	    }
 
-		if (unavailableList.isEmpty()) {
-			return ResponseEntity.ok("Doctor is already available on all selected dates.");
-		}
+	    // Validate staff exists and is a doctor
+	    Staff staff = staffRepository.findById(staffId)
+	            .orElseThrow(() -> new StaffNotFoundException("Staff with ID " + staffId + " not found"));
 
-		doctorScheduleRepository.deleteAll(unavailableList);
+	    if (staff.getStaffType() != com.flmhospitals.enums.StaffType.DOCTOR) {
+	        throw new IllegalArgumentException("Staff with ID " + staffId + " is not a doctor");
+	    }
 
-		return ResponseEntity.ok("Doctor marked available on selected dates successfully.");
+	    LocalDate today = LocalDate.now();
+	    List<LocalDate> invalidDates = new ArrayList<>();
+	    List<LocalDate> processedDates = new ArrayList<>();
+
+	    // Validate all dates are not in the past
+	    for (LocalDate date : dates) {
+	        if (date.isBefore(today)) {
+	            invalidDates.add(date);
+	        }
+	    }
+
+	    if (!invalidDates.isEmpty()) {
+	        throw new IllegalArgumentException("Cannot mark availability for past dates: " + invalidDates);
+	    }
+
+	    // Remove unavailable entries for these dates (making doctor available)
+	    for (LocalDate date : dates) {
+	        Optional<DoctorSchedule> existingSchedule = 
+	                doctorScheduleRepository.findByStaff_StaffIdAndUnavailableDate(staffId, date);
+	        
+	        if (existingSchedule.isPresent()) {
+	            doctorScheduleRepository.delete(existingSchedule.get());
+	            processedDates.add(date);
+	        }
+	    }
+
+	    if (processedDates.isEmpty()) {
+	        return ResponseEntity.ok("Doctor is already available on all selected dates");
+	    }
+
+	    return ResponseEntity.ok("Doctor marked available for " + processedDates.size() + " date(s)");
 	}
 
 	@Override
 	public boolean isDoctorAvailable(String staffId, LocalDate date) {
 
-		Staff staff = staffService.getStaffByStaffId(staffId);
+		// Validate staff exists and is a doctor
+		Staff staff = staffRepository.findById(staffId)
+		        .orElseThrow(() -> new StaffNotFoundException("Staff with ID " + staffId + " not found"));
 
+		if (staff.getStaffType() != com.flmhospitals.enums.StaffType.DOCTOR) {
+		    throw new IllegalArgumentException("Staff with ID " + staffId + " is not a doctor");
+		}
+
+		// Doctor is available if there's NO unavailable entry for this date
 		boolean isAvailable = !doctorScheduleRepository.existsByStaff_StaffIdAndUnavailableDate(staffId, date);
 
 		return isAvailable;
@@ -79,44 +106,85 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 	@Override
 	public List<LocalDate> markDoctorUnavailable(String doctorId, List<LocalDate> listOfUnavailabeDates) {
 
-	    Staff staff = staffRepository.findById(doctorId)
-	            .orElseThrow(() -> new StaffNotFoundException("No Doctor found with Id " + doctorId));
+	    // Validate input
+	    if (listOfUnavailabeDates == null || listOfUnavailabeDates.isEmpty()) {
+	        throw new IllegalArgumentException("Please provide at least one date");
+	    }
 
+	    // Validate staff exists and is a doctor
+	    Staff staff = staffRepository.findById(doctorId)
+	            .orElseThrow(() -> new StaffNotFoundException("Staff with ID " + doctorId + " not found"));
+
+	    if (staff.getStaffType() != com.flmhospitals.enums.StaffType.DOCTOR) {
+	        throw new IllegalArgumentException("Staff with ID " + doctorId + " is not a doctor");
+	    }
+
+	    LocalDate today = LocalDate.now();
 	    List<DoctorSchedule> listOfSchedules = new ArrayList<>();
+	    List<LocalDate> addedDates = new ArrayList<>();
+	    List<LocalDate> skippedPastDates = new ArrayList<>();
+	    List<LocalDate> alreadyMarkedDates = new ArrayList<>();
 
 		for (LocalDate unavailableDate : listOfUnavailabeDates) {
 
-			if (validateUnavailableDate(unavailableDate)
-					&& !checkUnavailableEntryExistsOrNot(doctorId, unavailableDate)) {
+			// Validate date is not in the past
+			if (unavailableDate.isBefore(today)) {
+			    skippedPastDates.add(unavailableDate);
+			    continue;
+			}
 
-				DoctorSchedule schedule = DoctorSchedule.builder().staff(staff).unavailableDate(unavailableDate)
+			// Check if already marked unavailable
+			if (!doctorScheduleRepository.existsByStaff_StaffIdAndUnavailableDate(doctorId, unavailableDate)) {
+
+				DoctorSchedule schedule = DoctorSchedule.builder()
+				        .staff(staff)
+				        .unavailableDate(unavailableDate)
 						.build();
 
 				listOfSchedules.add(schedule);
+				addedDates.add(unavailableDate);
+			} else {
+			    alreadyMarkedDates.add(unavailableDate);
 			}
 		}
 
 		if (listOfSchedules.isEmpty()) {
-			throw new DoctorUnavailableException(
-					"No new unavailable dates/Invalid Dates were added for doctor " + doctorId);
+		    String message = "No new unavailable dates were added.";
+		    if (!skippedPastDates.isEmpty()) {
+		        message += " Past dates were skipped.";
+		    }
+		    if (!alreadyMarkedDates.isEmpty()) {
+		        message += " Some dates were already marked unavailable.";
+		    }
+			throw new DoctorUnavailableException(message);
 		}
 
 		doctorScheduleRepository.saveAll(listOfSchedules);
 
-		return listOfSchedules.stream().map(DoctorSchedule::getUnavailableDate).toList();
+		return addedDates;
 
 	}
 
+	@Override
+	public List<LocalDate> getDoctorUnavailableDates(String doctorId) {
+		// Validate staff exists and is a doctor
+		Staff staff = staffRepository.findById(doctorId)
+				.orElseThrow(() -> new StaffNotFoundException("Staff with ID " + doctorId + " not found"));
 
-	public boolean validateUnavailableDate(LocalDate date) {
+		if (staff.getStaffType() != com.flmhospitals.enums.StaffType.DOCTOR) {
+			throw new IllegalArgumentException("Staff with ID " + doctorId + " is not a doctor");
+		}
 
-		return !date.isBefore(LocalDate.now());
-	}
-
-	public boolean checkUnavailableEntryExistsOrNot(String doctorId, LocalDate date) {
-
-		return doctorScheduleRepository.existsByStaff_StaffIdAndUnavailableDate(doctorId, date);
-
+		// Get all unavailable dates for this doctor
+		List<DoctorSchedule> schedules = doctorScheduleRepository.findByStaff_StaffId(doctorId);
+		
+		// Filter out past dates and return only future/today dates
+		LocalDate today = LocalDate.now();
+		return schedules.stream()
+				.map(DoctorSchedule::getUnavailableDate)
+				.filter(date -> !date.isBefore(today))
+				.sorted()
+				.toList();
 	}
 
 }
