@@ -2,11 +2,12 @@ package com.flmhospitals.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,7 +38,10 @@ public class SecurityConfig {
                                 "/staff/auth/login",
                                 "/staff/forgot-password",
                                 "/staff/verify-otp",
-                                "/staff/reset-password"
+                                "/staff/reset-password",
+                                "/staff/getDoctorName/**",
+                                "/staff/getSpecialization/**",
+                                "/doctorSchedule/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
@@ -64,6 +68,17 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Provide a UserDetailsService bean to suppress Spring Boot's auto-configured
+     * InMemoryUserDetailsManager, which would otherwise interfere with @PreAuthorize.
+     * Authentication is handled entirely by JwtAuthenticationFilter — this bean
+     * is never actually called for JWT-based requests.
+     */
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> { throw new UsernameNotFoundException("JWT authentication only"); };
     }
 }
 

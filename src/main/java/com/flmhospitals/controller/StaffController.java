@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.flmhospitals.builder.StaffDtoBuilder;
 import com.flmhospitals.dto.LoginRequest;
 import com.flmhospitals.dto.LoginResponse;
 import com.flmhospitals.dto.ForgotPasswordRequestDto;
@@ -49,8 +50,9 @@ public class StaffController {
 	}
 	
 	@GetMapping("/{staffId}")
-	public Staff getStaffByStaffId(@PathVariable String staffId) {
-		return staffService.getStaffByStaffId(staffId);
+	public ResponseEntity<StaffDetailsDto> getStaffByStaffId(@PathVariable String staffId) {
+		Staff staff = staffService.getStaffByStaffId(staffId);
+		return ResponseEntity.ok(StaffDtoBuilder.buildStaffDetailsDto(staff));
 	}
 
 
@@ -73,7 +75,7 @@ public class StaffController {
 			" with authorities: " + authorities);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/register")
 	public ResponseEntity<StaffDetailsDto> registerStaffDetails(@RequestBody RegisterStaffDto registerStaffDto){
 		StaffDetailsDto registeredStaffDetailsDto = staffService.registerStaffDeatils(registerStaffDto);	
@@ -81,7 +83,7 @@ public class StaffController {
 		
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping("/update/{staffId}")
 	public ResponseEntity<StaffDetailsDto> updateStaff(@PathVariable String staffId,@RequestBody RegisterStaffDto staffDetailsDto) {
 		StaffDetailsDto updatedStaff = staffService.updateStaff(staffId, staffDetailsDto);
@@ -89,7 +91,7 @@ public class StaffController {
 		
 	}
 	
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/resign/{staffId}")
 	public ResponseEntity<String> deleteStaff(@PathVariable(name="staffId") String staffId) {
 		

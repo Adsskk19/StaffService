@@ -121,12 +121,13 @@ public class StaffServiceImpl implements StaffService {
 		// Get the plain password from ThreadLocal before it's cleared
 		String plainPassword = StaffBuilder.getPlainPassword();
 		
+		String salutation = (registerdStaff.getStaffType() == StaffType.DOCTOR) ? "Dr. " : "";
 		EmailRequestDto emailRequest = new EmailRequestDto();
         emailRequest.setTo(registerdStaff.getEmail());
         emailRequest.setSubject("Welcome to MedSync - Temporary Password"); 
         emailRequest.setBody(
                 "<div style='font-family: Arial, sans-serif; padding: 20px;'>"
-                + "<h2 style='color: #2c3e50;'>Welcome to MedSync, Dr. " + registerdStaff.getFirstName() + " " + registerdStaff.getLastName() + "</h2>"
+                + "<h2 style='color: #2c3e50;'>Welcome to MedSync, " + salutation + registerdStaff.getFirstName() + " " + registerdStaff.getLastName() + "</h2>"
                 + "<p>Your doctor account has been successfully created by the administrator.</p>"
                 + "<div style='background-color: #f8f9fa; padding: 15px; border-left: 4px solid #007bff; margin: 20px 0;'>"
                 + "<h3 style='margin-top: 0; color: #007bff;'>Your Login Credentials</h3>"
@@ -313,9 +314,7 @@ public class StaffServiceImpl implements StaffService {
 	    }
 
 
-	    Staff staff = staffRepository.findAll().stream()
-	            .filter(s -> s.getEmail().equalsIgnoreCase(normalizedEmail))
-	            .findFirst()
+	    Staff staff = staffRepository.findByEmail(normalizedEmail)
 	            .orElseThrow(() -> new ResponseStatusException(
 	                    HttpStatus.UNAUTHORIZED,
 	                    "Invalid email or password"
